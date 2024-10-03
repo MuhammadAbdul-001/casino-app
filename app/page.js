@@ -57,7 +57,7 @@ export default function Home() {
         <Filter tagList={tagList} activeTag={activeTag} handleTag={handleTag} />
       </header>
       <div className={styles.body}>
-        {query !== ""
+        {query != ""
           ? filtered.map((el, i) => (
               <div className={styles.cards} key={el.id}>
                 <div className={styles.img}>
