@@ -37,7 +37,7 @@ export default function Home() {
       return array;
     } else {
       return array.filter(
-        (el) => el.category.toLowerCase() == activeTag.toLocaleLowerCase()
+        (el) => el.category.toLowerCase() == activeTag.toLowerCase()
       );
     }
   };
