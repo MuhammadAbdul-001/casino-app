@@ -10,7 +10,9 @@ export default function Home() {
   const [activeTag, setActiveTag] = useState("All");
   const [query, setQuery] = useState("");
   const searchFilter = (array) => {
-    return array.filter((el) => el.name.toLowerCase().includes(query));
+    return array.filter((el) =>
+      el.name.toLowerCase().includes(query.toLowerCase())
+    );
   };
   const filtered = searchFilter(data);
   const handleChange = (e) => {
@@ -37,7 +39,7 @@ export default function Home() {
       return array;
     } else {
       return array.filter(
-        (el) => el.category.toLowerCase() == activeTag.toLowerCase()
+        (el) => el.category.toLocaleLowerCase() == activeTag.toLocaleLowerCase()
       );
     }
   };
