@@ -1,0 +1,23 @@
+/* -[60%] flex flex-row justify-between" */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.buttons {
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  border-radius: 20px;
+}
+.button:hover {
+  background-color: antiquewhite;
+}
+.active {
+  /* "bg-black/60 text-orange-400" */
+  background-color: brown;
+  color: white;
+}
+.notActive {
+  background-color: green;
+  color: white;
+}

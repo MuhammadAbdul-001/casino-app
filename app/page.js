@@ -1,95 +1,92 @@
-import Image from "next/image";
+"use client";
 import styles from "./page.module.css";
+import { data } from "./api";
+import { useState } from "react";
+import Filter from "./components/component";
+import Image from "next/image";
+console.log(data);
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [activeTag, setActiveTag] = useState("All");
+  const [query, setQuery] = useState("");
+  const searchFilter = (array) => {
+    return array.filter((el) => el.name.toLowerCase().includes(query));
+  };
+  const filtered = searchFilter(data);
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+  };
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+  let tagList = [
+    "All",
+    "Slots",
+    "Adventure",
+    "Roulette",
+    "Card Games",
+    "Arcade",
+    "Dice",
+    "Puzzle",
+  ];
+
+  const handleTag = (tag) => {
+    setActiveTag(tag);
+  };
+
+  const filterTags = (array) => {
+    if (activeTag.toLowerCase() == "all") {
+      return array;
+    } else {
+      return array.filter(
+        (el) => el.category.toLocaleLowerCase() == activeTag.toLocaleLowerCase()
+      );
+    }
+  };
+  let filteredList = filterTags(data);
+  return (
+    <main className={styles.main}>
+      <header className={styles.header}>
+        <div className={styles.inputContainer}>
+          <input
+            value={query}
+            onChange={handleChange}
+            type="text"
+            placeholder="Search..."
+            className={styles.input}
+          />
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <Filter tagList={tagList} activeTag={activeTag} handleTag={handleTag} />
+      </header>
+      <div className={styles.body}>
+        {query !== ""
+          ? filtered.map((el, i) => (
+              <div className={styles.cards} key={el.id}>
+                <div className={styles.img}>
+                  <Image src={el.imgUrl} alt="Picture of the author" fill />
+                </div>
+                <div>category:{el.category}</div>
+                <div
+                  className="w-full border-[1px] border-gray-500 px-2 rounded-xl py-4"
+                  key={i}
+                >
+                  Name:{el.name}
+                </div>
+              </div>
+            ))
+          : filteredList.map((el, i) => (
+              <div className={styles.cards} key={el.id}>
+                <div className={styles.img}>
+                  <Image src={el.imgUrl} alt="Picture of the author" fill />
+                </div>
+                <div>category:{el.category}</div>
+                <div
+                  className="w-full border-[1px] border-gray-500 px-2 rounded-xl py-4"
+                  key={i}
+                >
+                  Name:{el.name}
+                </div>
+              </div>
+            ))}
+      </div>
+    </main>
   );
 }
